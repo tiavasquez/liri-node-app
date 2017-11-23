@@ -30,6 +30,10 @@ function myTweets() {
 
 function spotifyThisSong() {
 
+  // get spotify id from keys.js
+  var spotifyId = require('./keys.js');
+  console.log("Spotify client_id is: " + spotifyId.client_id);
+
   // use fs Node package for reading and writing files
   var fs = require("fs");
   // read text from random.txt and place in the variable "data"
@@ -57,6 +61,10 @@ function spotifyThisSong() {
 } //end spotifyThisSong function
 
 function movieThis() {
+
+  //get the OMDB api key from keys.js
+  var omdbKey = require('./keys.js');
+  console.log("OMDB API key is: " + omdbKey.api_key);
 
   // Include the request npm package (Don't forget to run "npm install request" in this folder first!)
   var request = require("request");

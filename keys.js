@@ -9,7 +9,15 @@ var twitterKeys = {
 
 module.exports = twitterKeys;
 
-//spotify client id: 5b329d31ecbf4edb94f1f440bc2f0bc4
-//spotify client secret: daa829ae018b4f709096998c3ea119a0
+var spotifyId = {
+  client_id: '5b329d31ecbf4edb94f1f440bc2f0bc4',
+  client_secret: 'daa829ae018b4f709096998c3ea119a0',
+}
 
-//OMDB API requires an API key. You may use `40e9cece`.
+module.exports = spotifyId;
+
+var omdbKey = {
+  api_key: '40e9cece',
+}
+
+module.exports = omdbKey;
