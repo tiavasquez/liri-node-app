@@ -64,28 +64,59 @@ function movieThis() {
 
   //get the OMDB api key from keys.js
   var omdbKey = require('./keys.js');
-  console.log("OMDB API key is: " + omdbKey.api_key);
 
   // Include the request npm package (Don't forget to run "npm install request" in this folder first!)
-  var request = require("request");
+  var request = require("request"); 
 
-  // Grab the movieName which will always be the third node argument.
-  var movieName = process.argv[2];
+  // Store all of the arguments in an array
+  var nodeArgs = process.argv;
+
+  // Create an empty variable for holding the movie name
+  var movieName = "";
+
+  //If no movie name, default to "Mr. Nobody"
+  if (process.argv[3] === undefined) {
+
+    movieName = "Mr. Nobody";
+
+  }
+  else {
+
+    // Loop through all the words in the node argument and format for query with "+" between words
+    for (var i = 3; i < nodeArgs.length; i++) {
+
+      if (i > 3 && i < nodeArgs.length) {
+
+        movieName = movieName + "+" + nodeArgs[i];
+
+      }
+
+      else {
+
+        movieName += nodeArgs[i];
+
+      }
+    }
+
+  } //end else
 
   // Then run a request to the OMDB API with the movie specified
-  var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=40e9cece";
-
-  // This line is just to help us debug against the actual URL.
-  console.log(queryUrl);
+  var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&tomatoes=true&apikey=" + omdbKey.api_key;
 
   request(queryUrl, function(error, response, body) {
 
     // If the request is successful
     if (!error && response.statusCode === 200) {
-
-      // Parse the body of the site and recover just the imdbRating
-      // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
+      
+      // get the info we want and display to terminal/console
+      console.log("Title: " + JSON.parse(body).Title);
       console.log("Release Year: " + JSON.parse(body).Year);
+      console.log("IMDB Rating: " + JSON.parse(body).imdbRating);
+      console.log("Rotten Tomatoes Rating: " + JSON.parse(body).tomatoRating);
+      console.log("Country Where Produced: " + JSON.parse(body).Country);
+      console.log("Language: " + JSON.parse(body).Language);
+      console.log("Plot: " + JSON.parse(body).Plot);
+      console.log("Actors: " + JSON.parse(body).Actors);      
     }
   });
 
