@@ -36,12 +36,13 @@ function spotifyThisSong() {
   
     // Create an empty variable for holding the movie name
     var songName = "";
+    var defaultSearch = false;
   
     //If no song name, default to "The Sign" by Ace of Base
     if (process.argv[3] === undefined) {
-  
-      songName = "The Sign";
-  
+
+      defaultSearch = true;
+
     }
     else {
   
@@ -66,23 +67,43 @@ function spotifyThisSong() {
   //need the node-spotify-api
   var Spotify = require('node-spotify-api');
 
+  //set up the id and secret
   var spotify = new Spotify({
         id: '5b329d31ecbf4edb94f1f440bc2f0bc4',
         secret: 'daa829ae018b4f709096998c3ea119a0'
   });
    
-  //submit a search to api to get the song info
-  spotify.search({ type: 'track', query: songName }, function(err, data) {
-        if (err) {
-          return console.log('Error occurred: ' + err);
-        }
-        
-        console.log('Name of the artist: '+data.tracks.items[0].artists[0].name);
-        console.log('Name of the track: '+data.tracks.items[0].name);
-        console.log('Name of the album: '+data.tracks.items[0].album.name);
-        console.log('Spotify link for the track: '+data.tracks.items[0].album.external_urls.spotify);
-        
-  });
+  //if no song specified, default to "The Sign" by Ace of Base
+  if (defaultSearch) {
+
+    spotify.search({ type: 'track,artist', query: 'The Sign%20artist:Ace of Base' }, function(err, data) {
+      if (err) {
+        return console.log('Error occurred: ' + err);
+      }
+      
+      console.log('Name of the artist: '+data.tracks.items[0].artists[0].name);
+      console.log('Name of the track: '+data.tracks.items[0].name);
+      console.log('Name of the album: '+data.tracks.items[0].album.name);
+      console.log('Spotify link for the track: '+data.tracks.items[0].album.external_urls.spotify);
+      
+    });
+  } //end if defaultSearch
+
+  //else search with given song
+  else {
+  
+    spotify.search({ type: 'track', query: songName }, function(err, data) {
+          if (err) {
+            return console.log('Error occurred: ' + err);
+          }
+          
+          console.log('Name of the artist: '+data.tracks.items[0].artists[0].name);
+          console.log('Name of the track: '+data.tracks.items[0].name);
+          console.log('Name of the album: '+data.tracks.items[0].album.name);
+          console.log('Spotify link for the track: '+data.tracks.items[0].album.external_urls.spotify);
+          
+    });
+  }//end of search by given song
 
 } //end spotifyThisSong function
 
