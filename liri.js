@@ -30,33 +30,59 @@ function myTweets() {
 
 function spotifyThisSong() {
 
-  // get spotify id from keys.js
-  var spotifyId = require('./keys.js');
-  console.log("Spotify client_id is: " + spotifyId.client_id);
-
-  // use fs Node package for reading and writing files
-  var fs = require("fs");
-  // read text from random.txt and place in the variable "data"
-  fs.readFile("random.txt", "utf8", function(error, data) {
-
-    // If the code experiences any errors it will log the error to the console.
-    if (error) {
-      return console.log(error);
+  //get the song from the terminal/command line
+  // Store all of the arguments in an array
+  var nodeArgs = process.argv;
+  
+    // Create an empty variable for holding the movie name
+    var songName = "";
+  
+    //If no song name, default to "The Sign" by Ace of Base
+    if (process.argv[3] === undefined) {
+  
+      songName = "The Sign";
+  
     }
+    else {
+  
+      // Loop through all the words in the node argument and format for query with " " between words
+      for (var i = 3; i < nodeArgs.length; i++) {
+  
+        if (i > 3 && i < nodeArgs.length) {
+  
+          songName = songName + " " + nodeArgs[i];
+  
+        }
+  
+        else {
+  
+          songName += nodeArgs[i];
+  
+        }
+      } //end for
+  
+    } //end else
+  
+  //need the node-spotify-api
+  var Spotify = require('node-spotify-api');
 
-    // We will then print the contents of data
-    console.log(data);
-
-    // Then split it by commas (to make it more readable)
-    var dataArr = data.split(",");
-    for (var i = 0; i < dataArr.length; i++) {
-      dataArr[i] = dataArr[i].trim();
-    }
-
-    // We will then re-display the content as an array for later use.
-    console.log(dataArr);
-
-  }); //end fs.readFile
+  var spotify = new Spotify({
+        id: '5b329d31ecbf4edb94f1f440bc2f0bc4',
+        secret: 'daa829ae018b4f709096998c3ea119a0'
+  });
+   
+  //submit a search to api to get the song info
+  spotify.search({ type: 'track', query: songName }, function(err, data) {
+        if (err) {
+          return console.log('Error occurred: ' + err);
+        }
+        
+        console.log('Name of the artist: '+data.tracks.items[0].artists[0].name);
+        console.log('Name of the track: '+data.tracks.items[0].name);
+        console.log('Name of the album: '+data.tracks.items[0].album.name);
+        console.log('Spotify link for the track: '+data.tracks.items[0].album.external_urls.spotify);
+        
+  });
 
 } //end spotifyThisSong function
 
@@ -65,7 +91,7 @@ function movieThis() {
   //get the OMDB api key from keys.js
   var omdbKey = require('./keys.js');
 
-  // Include the request npm package (Don't forget to run "npm install request" in this folder first!)
+  // Include the request npm package
   var request = require("request"); 
 
   // Store all of the arguments in an array
@@ -124,5 +150,29 @@ function movieThis() {
 } //end movieThis function
 
 function doWhatItSays() {
+
+  // use fs Node package for reading and writing files
+  var fs = require("fs");
+  // read text from random.txt and place in the variable "data"
+  fs.readFile("random.txt", "utf8", function(error, data) {
+
+    // If the code experiences any errors it will log the error to the console.
+    if (error) {
+      return console.log(error);
+    }
+
+    // We will then print the contents of data
+    console.log(data);
+
+    // Then split it by commas (to make it more readable)
+    var dataArr = data.split(",");
+    for (var i = 0; i < dataArr.length; i++) {
+      dataArr[i] = dataArr[i].trim();
+    }
+
+    // We will then re-display the content as an array for later use.
+    console.log(dataArr);
+
+  }); //end fs.readFile
   
 } //end doWhatItSays function

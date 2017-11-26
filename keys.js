@@ -9,13 +9,6 @@ var twitterKeys = {
 
 module.exports = twitterKeys;
 
-var spotifyId = {
-  client_id: '5b329d31ecbf4edb94f1f440bc2f0bc4',
-  client_secret: 'daa829ae018b4f709096998c3ea119a0',
-}
-
-module.exports = spotifyId;
-
 var omdbKey = {
   api_key: '40e9cece',
 }
