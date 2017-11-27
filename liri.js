@@ -26,6 +26,8 @@ function myTweets() {
   var twitterKeys = require('./keys.js');
   console.log("Twitter consumer_key is: " + twitterKeys.consumer_key);
 
+  //TODO: use Twitter api to get the last 20 tweets
+
 } //end myTweets function
 
 function spotifyThisSong() {
@@ -182,17 +184,13 @@ function doWhatItSays() {
       return console.log(error);
     }
 
-    // We will then print the contents of data
-    console.log(data);
-
-    // Then split it by commas (to make it more readable)
-    var dataArr = data.split(",");
-    for (var i = 0; i < dataArr.length; i++) {
-      dataArr[i] = dataArr[i].trim();
-    }
-
-    // We will then re-display the content as an array for later use.
-    console.log(dataArr);
+    // The format of the file input is: spotify-this-song,"Song Title"
+    // split by comma into two variables to get the two parts
+    var commaIndex = data.indexOf(",");
+    var command = data.slice(0,commaIndex);
+    var songTitle = data.slice(commaIndex+1,data.length);
+    
+    //TODO: call spotifyThisSong function with the songTitle. change spotifyThisSong function to accept a song title.
 
   }); //end fs.readFile
   
